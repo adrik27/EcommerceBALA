@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('container')
+{{-- @dd($order->Order_Detail[0]->Produk) --}}
 <div class="container">
     <div class="row">
         <div class="col">

@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-xl">
-            <form action="/order" method="post">
+            <form action="/orderKeranjang" method="post">
                 @csrf
                 <input type="hidden" value="" name="id">
                 <div class="card">
@@ -32,8 +32,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $total_harga = 0 ?>
                                     @foreach ($Produks as $produk)
                                     <tr>
+                                        <input type="hidden" name="id_produk[]" value="{{ $produk->id }}">
                                         <td>
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
@@ -51,14 +53,16 @@
                                         </td>
                                         <td>
 
-                                            <input type="number" class="form-control" name="jumlah" value="1" readonly>
+                                            <input type="number" class="form-control" name="jumlah[]" value="1"
+                                                readonly>
                                         </td>
                                         <td class="fw-medium text-end">
                                             @currency($produk->harga)
                                         </td>
                                     </tr>
+                                    <?php $total_harga += $produk->harga ?>
                                     @endforeach
-                                    {{-- <tr class="border-top border-top-dashed">
+                                    <tr class="border-top border-top-dashed">
                                         <td colspan="4"></td>
                                         <td colspan="3" class="fw-medium p-0">
                                             <table class="table table-borderless mb-0">
@@ -66,13 +70,15 @@
                                                     <tr class="border-top border-top-dashed">
                                                         <th scope="row">Total :</th>
                                                         <th class="text-end">
-                                                            {{ $produk->harga }}
+                                                            @currency( $total_harga )
                                                         </th>
+                                                        <input type="hidden" name="total_iki"
+                                                            value="{{ $total_harga }}">
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </td>
-                                    </tr> --}}
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

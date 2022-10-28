@@ -14,13 +14,13 @@ class Order_Detail extends Model
     protected $guarded = ['id'];
 
 
-    public function Order(): HasMany
+    public function Order()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Order::class);
     }
 
-    public function Produk(): HasMany
+    public function Produk()
     {
-        return $this->hasMany(Produk::class);
+        return $this->belongsTo(Produk::class);
     }
 }

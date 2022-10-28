@@ -49,3 +49,5 @@ Route::post('/beli', [BeliProdukController::class, 'checkoutDariKeranjang'])->mi
 Route::resource('/order', OrderController::class)->middleware('auth');
 // DETAIL PESANAN
 Route::get('/detailPesanan/{Order:id}', [OrderController::class, 'detail'])->middleware('auth');
+
+Route::post('/orderKeranjang', [OrderController::class, 'order_keranjang']);

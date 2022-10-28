@@ -127,6 +127,39 @@ class OrderController extends Controller
         ]);
     }
 
+    public function order_keranjang(Request $req)
+    {
+        // return $req->all();
+        $user_id = auth()->user()->id;
+        $status_id = 1;
+        $tanggal = date('Y-m-d');
+        $total = $req->total_iki;
+
+        $data = [
+            'user_id' => $user_id,
+            'status_id' => $status_id,
+            'tanggal' => $tanggal,
+            'total' => $total
+        ];
+
+        $order = Order::create($data);
+        $order_id = $order->id;
+
+        $dataorderdetail = [];
+
+        foreach ($req->id_produk as $key => $value) {
+            $dataorderdetail[] = [
+                'order_id' => $order_id,
+                'produk_id' => $req->id_produk[$key],
+                'jumlah' => $req->jumlah[$key]
+            ];
+        }
+
+        Order_Detail::insert($dataorderdetail);
+        Keranjang::where('user_id', $user_id)->delete();
+        return redirect('/')->with('success', 'Order Pesanan Berhasil !!')->with('link', $order->id);
+    }
+
     // public function semua(Order $order)
     // {
     //     if ($user = auth()->user()) {

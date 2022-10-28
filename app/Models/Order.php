@@ -24,8 +24,8 @@ class Order extends Model
         return $this->belongsTo(Status::class);
     }
 
-    public function Order_Detail(): BelongsTo
+    public function Order_Detail()
     {
-        return $this->belongsTo(Order_Detail::class);
+        return $this->hasMany(Order_Detail::class);
     }
 }
