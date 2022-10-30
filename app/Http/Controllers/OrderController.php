@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Produk;
+use App\Models\Status;
 use App\Models\Keranjang;
 use App\Models\Order_Detail;
 use Illuminate\Http\Request;
@@ -62,7 +63,8 @@ class OrderController extends Controller
         ];
         Order_Detail::create($data_detail);
 
-        return redirect('/')->with('success', 'Order Pesanan Berhasil !!')->with('link', $order->id);
+        // return redirect('/')->with('success', 'Order Pesanan Berhasil !!')->with('link', $order->id);
+        return redirect('/')->with('success', 'Order Pesanan Berhasil !!');
     }
 
     /**
@@ -110,20 +112,20 @@ class OrderController extends Controller
         //
     }
 
-    public function detail(Order $Order, Request $request)
+    public function detail(Order $Order)
     {
+        // dd($Order);
         if ($user = auth()->user()) {
             $user = auth()->user()->id;
         } else {
             $user = auth()->user();
         }
 
-
         $keranjang = Keranjang::where('user_id', $user)->with('produk')->get();
         return view('detailpesanan', [
             'tittlePage'    =>  'Detail Pesanan',
             'keranjangs'    => $keranjang,
-            'order'         => $Order,
+            'order'        =>  $Order //::with(['Order_Detail'])->where('user_id', auth()->user()->id)->first()
         ]);
     }
 
@@ -157,24 +159,70 @@ class OrderController extends Controller
 
         Order_Detail::insert($dataorderdetail);
         Keranjang::where('user_id', $user_id)->delete();
-        return redirect('/')->with('success', 'Order Pesanan Berhasil !!')->with('link', $order->id);
+        return redirect('/')->with('success', 'Order Pesanan Berhasil !!');
     }
 
-    // public function semua(Order $order)
-    // {
-    //     if ($user = auth()->user()) {
-    //         $user = auth()->user()->id;
-    //     } else {
-    //         $user = auth()->user();
-    //     }
+    public function detailsemua(Request $req)
+    {
+        if ($user = auth()->user()) {
+            $user = auth()->user()->id;
+        } else {
+            $user = auth()->user();
+        }
 
 
-    //     $keranjang = Keranjang::where('user_id', $user)->with('produk')->get();
-    //     return view('listorder', [
-    //         'tittlePage'    =>  'List Detail',
-    //         'keranjangs'    =>  $keranjang,
-    //          'orders'  =>  Order::where('', $request->id)->get(),
-    //         'orderDet' =>  Order::where('id', $order->id)->get(),
-    //     ]);
-    // }
+        $keranjang = Keranjang::where('user_id', $user)->with('produk')->get();
+        return view('detailpesanansemua', [
+            'tittlePage'    =>  'Detail Pesanan semua',
+            'keranjangs'    =>  $keranjang,
+            'orders'        =>  Order::with(['Order_Detail'])->where('user_id', auth()->user()->id)->first()
+        ]);
+    }
+
+    public function pesanansaya()
+    {
+        if ($user = auth()->user()) {
+            $user = auth()->user()->id;
+        } else {
+            $user = auth()->user();
+        }
+
+
+        $keranjang = Keranjang::where('user_id', $user)->with('produk')->get();
+
+        return view('pesanansaya', [
+            'tittlePage'    =>  'Pesanan Saya',
+            'keranjangs'    =>  $keranjang,
+            'pesanansaya'   =>  Order::where('user_id', auth()->user()->id)->get()
+        ]);
+    }
+
+    public function alllistorder()
+    {
+        return view('dashboard.Listorder.index', [
+            'tittlePage'    =>  'List Order',
+            'orders'        =>  Order::all()
+        ]);
+    }
+
+    public function edit_listOrder($order)
+    {
+        return view('dashboard.Listorder.edit', [
+            'tittlePage'    =>  'List Order',
+            'statuses'      =>  Status::all(),
+            'orders'        =>  Order::where('id', $order)->first()
+        ]);
+    }
+
+    public function update_listOrder(Request $request)
+    {
+
+        $data = $request->validate([
+            'status_id' => 'required'
+        ]);
+
+        Order::where('id', $request->id)
+            ->update($data);
+        return redirect('/dashboard/listorder')->with('success', 'Update List Order Berhasil !!');
+    }
 }

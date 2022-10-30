@@ -92,7 +92,7 @@
     <div class="row d-block text-center">
         <div class="col ">
             <button type="submit" class="btn btn-sm btn-primary">Konfirmasi</button>
-            <a href="" class="btn btn-sm btn-danger">Kembali</a>
+            <a href="/" class="btn btn-sm btn-danger">Kembali</a>
         </div>
     </div>
     </form>

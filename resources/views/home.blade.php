@@ -7,7 +7,8 @@
         @if (session()->has('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <a href="/detailPesanan/{{ session('link') }}">Lihat Detail Pesanan</a>
+            {{-- <a href="/detailPesanan/{{ session('link') }}">Lihat Detail Pesanan</a> --}}
+            <a href="/detailpesanansemua">Lihat Detail Pesanan Semua</a>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
             </button>
         </div>

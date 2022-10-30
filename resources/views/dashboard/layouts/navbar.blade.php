@@ -48,7 +48,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#">
+                    <a class="nav-link menu-link {{ Request::is('dashboard/listorder*')?'active':'' }}"
+                        href="/dashboard/listorder">
                         <i class="ri-bar-chart-grouped-line"></i> <span data-key="t-widgets">List Order</span>
                     </a>
                 </li>

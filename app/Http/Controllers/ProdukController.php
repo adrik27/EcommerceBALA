@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Order;
+
 use App\Models\Produk;
 use App\Models\Keranjang;
-use App\Models\Order_Detail;
-use Illuminate\Http\Request;
+
 
 
 class ProdukController extends Controller
